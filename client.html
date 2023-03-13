@@ -30,7 +30,16 @@
             </div>
         </form>
 		<script>
-			
+			import axios from 'axios';
+            axios.post('https://project-node-1c2r.onrender.com/annotation', {
+                    name: 'Fred',
+                })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
 		</script>
 
 	</body>
