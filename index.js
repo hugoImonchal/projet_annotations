@@ -23,7 +23,7 @@ app.get("/toto", function(req, res){
     res.send("Salut toto");
 });
 
-app.post("", function(req, res){
+app.post("/annotation", function(req, res){
     console.log(req)
     res.send("bien reçu");
 });
