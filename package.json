@@ -1,0 +1,11 @@
+{
+  "name": "projet_annotations",
+  "version": "1.0.0",
+  "description": "projet pour le cours d'integration de donnees connectees",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Hugo Monchal",
+  "license": "ISC"
+}
