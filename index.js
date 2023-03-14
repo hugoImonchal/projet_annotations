@@ -24,8 +24,9 @@ function JSONtoXML(obj) {
 };
 
 var app = express();
-var port = 3000;
+var PORT =  process.env.PORT || 3000;
 var n_annotations = 0;
+
 var annotations = {format: 'json', data:[{
     id: '-3',
     URI: 'jnjnjnjn',
@@ -159,8 +160,8 @@ app.get("/get_specific_annotations", function(req, res){
 });
 
 // start the server
-app.listen(port);
-console.log('Server started! At http://localhost:' + port);
+app.listen(PORT);
+console.log('Server started! At http://localhost:' + PORT);
 var fil = annotations.data.filter(function (ann) {
     return ann.user_name === "Hugo";
   });
