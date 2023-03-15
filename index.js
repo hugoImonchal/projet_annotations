@@ -49,22 +49,22 @@ var n_annotations = 0;
 var annotations = {format: 'json', data:[{
     annotUri: MAIN_URL + '/annotation/a',
     id: 'a',
-    URI: 'jnjnjnjn',
+    URI: 'https://hugoimonchal.github.io/projet_annotations/client.html',
     user_name: 'anonymous',
-    annotation: 'jnjnjnbhjbbhbjuib'
+    annotation: 'ça vaut au moins 18/20 !'
   }, {
     annotUri: MAIN_URL + '/annotation/b',
     id: 'b',
-    URI: 'jn.com',
+    URI: 'https://github.com/natoine/otakuotake/tree/node',
     user_name: 'Hugo',
-    annotation: 'hahaha'
+    annotation: "Un exemple qui m'a bien aidé"
   },
   {
     annotUri: MAIN_URL + '/annotation/c',
     id: 'c',
     URI: 'truc.com',
     user_name: 'Hugo',
-    annotation: 'enorme'
+    annotation: 'ENORME'
   }
 
 ]};
