@@ -5,7 +5,7 @@
 		<title> Client </title>
 		<script>
             const MAIN_URL = "https://project-node-1c2r.onrender.com"
-            // const MAIN_URL = "http://localhost:3000";
+            //const MAIN_URL = "http://localhost:3000";
             function path(endpoint){
                 return(MAIN_URL+endpoint)
             };
@@ -33,13 +33,13 @@
                 });
 			};
 
-            function get_annotations(){
+            function get_filtered_annotations(){
                 var n = document.getElementById('quantity').value;
                 var id = document.getElementById('reqId').value;
                 var uri = document.getElementById('reqUri').value;
                 var pseudo = document.getElementById('reqName').value;
                 var format = document.getElementById('format').value;
-                var endpoint = '/get_specific_annotations' + '?'
+                var endpoint = '/filtered_annotations' + '?'
                     + 'reqId=' + id
                     + '&reqUri=' + encodeURIComponent(uri)
                     + '&reqName=' + pseudo
@@ -47,6 +47,7 @@
                     + '&format=' + format;
                 window.open(path(endpoint), '_blank');
             };
+
             function resetFilters(){
                 document.getElementById('quantity').value = '';
                 document.getElementById('reqId').value = '';
@@ -54,6 +55,12 @@
                 document.getElementById('reqName').value = '';
             };
 
+            function get_specific(){
+                var id = document.getElementById('idUnique').value;
+                var format = document.getElementById('formatUnique').value;
+                var endpoint = '/annotation/' + id + '?format=' + format;
+                window.open(path(endpoint), '_blank');
+            };
 
 		</script>
 	</head>
@@ -83,40 +90,6 @@
 		<p class = "resp" id="post_resp">
 		</p>
 
-		<h1>Acceder à certaines annotations</h1>
-		<form autocomplete="off">
-			<p>
-				<label for="reqId">Filtrer l'ID des annotations: </label>
-				<input type="text" name="reqId" id="reqId" placeholder="" size="30" maxlength="20">
-			</p>
-            <p>
-				<label for="reqUri">Filtrer l'URI des annotations: </label>
-				<input type="text" name="reqUri" id="reqUri" placeholder="" size="30">
-			</p>
-            <p>
-				<label for="reqName">Filtrer le pseudo: </label>
-				<input type="text" name="reqName" id="reqName" placeholder="" size="30" maxlength="25">
-			</p>
-            <p>
-				<label for="quantity">Nombre de résultats souhaité (0 ou rien pour tous) </label>
-				<input type="number" name="quantity" id="quantity" min="0">
-			</p>
-			<p>
-				<label for="format">Choisissez le format de réponse</label><br>
-				<select name="format" id="format">
-					<option value="html">html</option>
-					<option value="Json">Json</option>
-                    <option value="xml">xml</option>
-				</select>
-			</p>
-			<p> 
-                <button onclick="get_annotations()" type="button">Acceder</button> 
-			</p>
-            <p> 
-				<input type="button" value="Reset filters" onclick="resetFilters()">
-			</p>
-		</form>
-
 		<h1>Acceder à toutes les annotations</h1>
 		<form id="form_all"  method="GET" autocomplete="off">
 			<p>
@@ -134,6 +107,59 @@
         <script>
             document.getElementById('form_all').action = path('/get_all_annotations');
         </script>
+
+        <h1>Acceder une annotation spécifique</h1>
+        <form id="form_id"  autocomplete="off">
+            <p>
+            <label for="idUnique">Id de l'annotation: </label>
+            <input type="text" name="idUnique" id="idUnique" placeholder="" size="30" maxlength="20">
+            </p>
+            <p>
+                <label for="formatUnique">Choisissez le format de réponse</label><br>
+                <select name="formatUnique" id="formatUnique">
+                    <option value="html">html</option>
+                    <option value="Json">Json</option>
+                    <option value="xml">xml</option>
+                </select>
+            </p>
+            <p> 
+                <input type="button" value="Acceder" onclick="get_specific()">  
+            </p>
+        </form>
+        
+        <h1>Filtrer les annotations</h1>
+        <form autocomplete="off">
+            <p>
+                <label for="reqId">Filtrer l'ID des annotations: </label>
+                <input type="text" name="reqId" id="reqId" placeholder="" size="30" maxlength="20">
+            </p>
+            <p>
+                <label for="reqUri">Filtrer l'URI des annotations: </label>
+                <input type="text" name="reqUri" id="reqUri" placeholder="" size="30">
+            </p>
+            <p>
+                <label for="reqName">Filtrer le pseudo: </label>
+                <input type="text" name="reqName" id="reqName" placeholder="" size="30" maxlength="25">
+            </p>
+            <p>
+                <label for="quantity">Nombre de résultats souhaité (0 ou rien pour tous) </label>
+                <input type="number" name="quantity" id="quantity" min="0">
+            </p>
+            <p>
+                <label for="format">Choisissez le format de réponse</label><br>
+                <select name="format" id="format">
+                    <option value="html">html</option>
+                    <option value="Json">Json</option>
+                    <option value="xml">xml</option>
+                </select>
+            </p>
+            <p> 
+                <button onclick="get_filtered_annotations()" type="button">Acceder</button> 
+            </p>
+            <p> 
+                <input type="button" value="Reset filters" onclick="resetFilters()">
+            </p>
+        </form>
 		
 	</body>
 </html>

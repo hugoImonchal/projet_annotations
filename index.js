@@ -1,6 +1,9 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 
+const MAIN_URL = "https://project-node-1c2r.onrender.com"
+//const MAIN_URL = "http://localhost:3000";
+
 function JSONtoXML(obj) {
     // source: https://codingbeautydev.com/blog/javascript-convert-json-to-xml/
     let xml = '';
@@ -28,18 +31,21 @@ var PORT =  process.env.PORT || 3000;
 var n_annotations = 0;
 
 var annotations = {format: 'json', data:[{
-    id: '-3',
+    annotUri: MAIN_URL + '/annotation/a',
+    id: 'a',
     URI: 'jnjnjnjn',
     user_name: 'anonymous',
     annotation: 'jnjnjnbhjbbhbjuib'
   }, {
-    id: '-2',
+    annotUri: MAIN_URL + '/annotation/b',
+    id: 'b',
     URI: 'jn.com',
     user_name: 'Hugo',
     annotation: 'hahaha'
   },
   {
-    id: '-1',
+    annotUri: MAIN_URL + '/annotation/c',
+    id: 'c',
     URI: 'truc.com',
     user_name: 'Hugo',
     annotation: 'enorme'
@@ -71,6 +77,7 @@ app.post('/add_annotation', function(req, res) {
     console.log('receiving data ...');
     var annotation = req.body
     annotation['id'] = n_annotations.toString();
+    annotation['annotUri'] = MAIN_URL + '/annotation/' + n_annotations.toString(),
     n_annotations += 1;
     annotations.data.push(annotation);
     res.status(200);
@@ -110,7 +117,51 @@ app.get("/get_all_annotations", function(req, res){
 	
 });
 
-app.get("/get_specific_annotations", function(req, res){
+app.get("/annotation/:id", function(req, res){
+	var id = req.params.id;
+    var format = req.query.format;
+	var filtered = annotations.data.filter(function (ann) {
+        return( (ann.id === id)
+        );
+    });
+
+    if (format=="html"){
+		req.headers['accept']= 'text/html';
+	}
+	else {
+		if (format=="Json"){
+			req.headers['accept']=  'application/json';
+		}
+        else{
+            if (format == "xml"){
+                req.headers['accept']= 'application/xml';
+            }
+        }	
+	}
+
+    if (filtered.length == 0){
+        res.status(404)
+        res.send('Can\'t find annotation with id: ' + id)
+        console.log('Can\'t find annotation ' + id)
+    } else {
+        res.format ({
+            'text/html': function() {
+               res.send(filtered); 
+            },
+            'application/json': function() {
+               res.send({format:'json', data: filtered});
+             },
+             'application/xml': function() {
+                 xmlObj = JSONtoXML({'annotations':{'annotation': filtered} });
+                 res.send(xmlObj);
+             }
+        });
+        console.log('annotation ' + id + ' sent to the format ' + format);
+    }
+	
+});
+
+app.get("/filtered_annotations", function(req, res){
 	var format = req.query.format;
 	var filter_id = req.query.reqId;
     var filter_uri = decodeURIComponent(req.query.reqUri);
@@ -162,7 +213,3 @@ app.get("/get_specific_annotations", function(req, res){
 // start the server
 app.listen(PORT);
 console.log('Server started! At http://localhost:' + PORT);
-var fil = annotations.data.filter(function (ann) {
-    return ann.user_name === "Hugo";
-  });
-console.log(fil);
