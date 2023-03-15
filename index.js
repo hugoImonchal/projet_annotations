@@ -26,6 +26,22 @@ function JSONtoXML(obj) {
     return xml;
 };
 
+function toHTML(arr){
+    html = "<!DOCTYPE html><html lang='fr'><head><meta charset='UTF-8'/><title>Response</title></head><body>";
+    arr.map(function(annot){
+        str = "<div id='" + annot.id 
+            + "'><p class='annotUri'> annotUri : " + annot.annotUri 
+            + "</p><p class ='id'> id : " + annot.id
+            + "</p><p class ='URI'> URI : " + annot.URI
+            + "</p><p class ='annoration'> annotation : " + annot.annotation
+            + "</p><p class ='user_name'> user_name : " + annot.user_name
+            + "</p></div>";
+        html += str;
+    });
+    html += "</body></html>";
+    return html;
+};
+
 var app = express();
 var PORT =  process.env.PORT || 3000;
 var n_annotations = 0;
@@ -86,17 +102,17 @@ app.post('/add_annotation', function(req, res) {
 });
 
 app.get("/get_all_annotations", function(req, res){
-	var ChoixFormat=req.query.FormatAllAnnot;
+	var format=req.query.FormatAllAnnot;
     console.log(req.query.machin);
-	if (ChoixFormat=="html"){
+	if (format=="html"){
 		req.headers['accept']= 'text/html';
 	}
 	else {
-		if (ChoixFormat=="Json"){
+		if (format=="Json"){
 			req.headers['accept']=  'application/json';
 		}
         else{
-            if (ChoixFormat == "xml"){
+            if (format == "xml"){
                 req.headers['accept']= 'application/xml';
             }
         }	
@@ -104,7 +120,7 @@ app.get("/get_all_annotations", function(req, res){
 		
 	res.format ({
 		   'text/html': function() {
-			  res.send(annotations.data); 
+			  res.send(toHTML(annotations.data)); 
 		   },
 		   'application/json': function() {
 			  res.send(annotations);
@@ -146,7 +162,7 @@ app.get("/annotation/:id", function(req, res){
     } else {
         res.format ({
             'text/html': function() {
-               res.send(filtered); 
+               res.send(toHTML(filtered)); 
             },
             'application/json': function() {
                res.send({format:'json', data: filtered});
@@ -197,7 +213,7 @@ app.get("/filtered_annotations", function(req, res){
 	
 	res.format ({
 		   'text/html': function() {
-			  res.send(filtered); 
+			  res.send(toHTML(filtered)); 
 		   },
 		   'application/json': function() {
 			  res.send({format:'json', data:filtered});
