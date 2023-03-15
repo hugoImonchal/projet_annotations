@@ -29,12 +29,12 @@ function JSONtoXML(obj) {
 function toHTML(arr){
     html = "<!DOCTYPE html><html lang='fr'><head><meta charset='UTF-8'/><title>Response</title></head><body>";
     arr.map(function(annot){
-        str = "<div id='" + annot.id 
-            + "'><p class='annotUri'> annotUri : " + annot.annotUri 
-            + "</p><p class ='id'> id : " + annot.id
-            + "</p><p class ='URI'> URI : " + annot.URI
-            + "</p><p class ='annoration'> annotation : " + annot.annotation
-            + "</p><p class ='user_name'> user_name : " + annot.user_name
+        str = "<div style='background: #EEEEEE; border: 1px solid #333333;' id='" + annot.id 
+            + "'><p class='annotUri'> <strong>annotUri</strong> : " + annot.annotUri 
+            + "</p><p class ='id'> <strong>id</strong> : " + annot.id
+            + "</p><p class ='URI'> <strong>URI</strong> : " + annot.URI
+            + "</p><p class ='annoration'> <strong>annotation</strong> : " + annot.annotation
+            + "</p><p class ='user_name'> <strong>user_name</strong> : " + annot.user_name
             + "</p></div>";
         html += str;
     });
@@ -130,7 +130,7 @@ app.get("/get_all_annotations", function(req, res){
                 res.send(xmlObj);
             }
 	});
-	
+    console.log('Envoi de toutes les annotations');
 });
 
 app.get("/annotation/:id", function(req, res){
@@ -223,6 +223,8 @@ app.get("/filtered_annotations", function(req, res){
                 res.send(xmlObj);
             }
 	});
+    console.log('Envoi de données filtrées selon :' 
+    + JSON.stringify({'filter_id': filter_id, 'filter_uri': filter_uri, 'filter_name': filter_name, 'qunatity': n }))
 	
 });
 
